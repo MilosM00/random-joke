@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Joke from "./components/Joke";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () =>{
+
+    const [joke, setJoke] = React.useState({});
+    const [newJoke, setNewJoke] = React.useState(true);
+
+    React.useEffect(() =>{
+
+        const dispalyJokes = async () =>{
+    
+            const response = await fetch("https://api.chucknorris.io/jokes/random");
+            const data = await response.json();
+            setJoke(data);
+    
+        };
+        dispalyJokes();
+
+    }, [newJoke]);
+
+    const newJokeF = () =>{
+
+        setNewJoke(prevNewJoke => !prevNewJoke);
+
+    };
+
+    return(
+
+        <div>
+
+            <Joke
+                joke={joke.value}
+                new={newJokeF}
+            />
+
+        </div>
+
+    );
+};
 
 export default App;
